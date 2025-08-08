@@ -2,6 +2,10 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Admin {
+
+    private static final String USERS_FILE = System.getProperty("user.dir") 
+            + File.separator + "data" + File.separator + "users.txt";
+
     public static void login() {
         Scanner sc = new Scanner(System.in);
         System.out.print("Admin username: ");
@@ -27,22 +31,26 @@ public class Admin {
 
             switch (ch) {
                 case 1:
-                    try (BufferedReader br = new BufferedReader(new FileReader("data/users.txt"))) {
-                        String line;
-                        System.out.println("\nRegistered Users:");
-                        while ((line = br.readLine()) != null) {
-                            String[] parts = line.split(",");
-                            System.out.println("User: " + parts[0] + ", Balance: ₹" + parts[2]);
-                        }
-                    } catch (IOException e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
+                    viewAllUsers();
                     break;
                 case 2:
                     return;
                 default:
                     System.out.println("Invalid choice.");
             }
+        }
+    }
+
+    private static void viewAllUsers() {
+        try (BufferedReader br = new BufferedReader(new FileReader(USERS_FILE))) {
+            String line;
+            System.out.println("\nRegistered Users:");
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                System.out.println("User: " + parts[0] + ", Balance: $" + parts[2]);
+            }
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
         }
     }
 }
